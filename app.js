@@ -25,8 +25,6 @@ buttons.forEach((button) => {
     } else if (event.target.classList.contains('equals')) {
       calculateResult();
     }
-    
-    console.log(event.target.innerText);
 
 }});
   });
@@ -36,22 +34,28 @@ function takeNumber(number) {
     updateDisplay(humanChoiceNumbers);
 }
 
-function takeOperator(operator) {
-    if (operator === 'C') {
+function takeOperator(operator1) {
+    if (operator1 === 'C') {
         humanChoiceNumbers = '';
         newInput = '';
         humanChoiceCalculations = '';
-        operator = '';
-        updateDisplay('0');
-    } if (humanChoiceNumbers !== '' && newInput === '') {
-        newOperator = humanChoiceNumbers;
-        humanChoiceNumbers = '';
-        
+        updateDisplay('0'); 
     }
-    
-    humanChoiceCalculations += operator;
-    updateDisplay(humanChoiceCalculations);
 
+    if (humanChoiceCalculations === '' && operator1 !== 'C') { 
+        humanChoiceCalculations += operator1;
+        updateDisplay(humanChoiceCalculations);
+    } 
+
+    if (newInput === '') {
+        newInput = humanChoiceNumbers; 
+    } else if (humanChoiceNumbers !== '') {
+        calculateResult(); 
+        newInput = humanChoiceNumbers; 
+    }
+
+    operator = operator1; 
+    humanChoiceNumbers = ''; 
 }
 
   function updateDisplay(text) {
@@ -60,8 +64,8 @@ function takeOperator(operator) {
 
   function calculateResult() {
     let result;
-    const num1 = Number(humanChoiceNumbers); 
-    const num2 = Number(newInput);  
+    const num1 = Number(newInput); 
+    const num2 = Number(humanChoiceNumbers);  
   
     if (operator === '+') {
       result = num1 + num2;
@@ -74,6 +78,9 @@ function takeOperator(operator) {
     } else {
       return newInput;
     }
-  
-    return result.toString();
+    
+    updateDisplay(result); 
+    humanChoiceNumbers = result.toString(); 
+    newInput = ''; 
+    operator = ''; 
   }
